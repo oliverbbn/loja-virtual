@@ -1,7 +1,8 @@
+
 async function carregarProdutos(){
 
     try {
-        let resposta = await fetch(`https://fakestoreapi.com./products`);
+        let resposta = await fetch(`https://fakestoreapi.com/products`);
 
         if (!resposta.ok){
             throw new Error("Erro ao carregar o catáligo de produtos.");
@@ -11,17 +12,18 @@ async function carregarProdutos(){
 
 
     listaProdutos = dadosJson;
-
+   
     let vitrine = document.getElementById("vitrineProdutos");
       
     let cardsHtml = listaProdutos.map(produto => {
         return `
         <div class="col-md-3 md-4">
-        <div class="card h-100 p-3>
+        <div class="card h-100 p-3">
             <img src="${produto.image}" class="card-img-top" alt="Imagem do Produto" style="height:200px; object-fit:contain;">
             <div class="card-body d-flex flex-column">
                 <h6 class="card-title">${produto.title}</h6>
-                <h5 class="text-success mt-auto">R$ ${produto.price}</h5>
+                <p>⭐ Nota: ${produto.rating.rate} (${produto.rating.count} avaliações)</p>
+                <h5 class="text-success mt-auto">${produto.price.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</h5>
                 <button class="btn btn-primary w-100 mt-2">Comprar</button>
             </div>
         </div>
@@ -29,11 +31,18 @@ async function carregarProdutos(){
         `;
     }).join('');
 
-    vitrine = cardsHtml;
+    vitrine.innerHTML = cardsHtml;
 
 } catch (erroTratado){
     console.error(erroTratado);
 }
 }
 
-vitrine.innerHTML=`${cardsHtml}`;
+carregarProdutos();
+
+async function buscarProduto(){
+    let produtoDigitado=document.getElementById('busca-produto').value.toLowerCase();
+    let url=`https://fakestoreapi.com/products/${produtoDigitado}`;
+
+
+}
